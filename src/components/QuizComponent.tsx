@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, ArrowLeft, Trophy, BookOpen } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowLeft, Trophy, BookOpen, ArrowRight } from "lucide-react";
 import { Quiz, UserProgress } from "@/types/learning";
 
 interface QuizComponentProps {
@@ -13,7 +13,7 @@ interface QuizComponentProps {
   moduleTitle: string;
   progress: UserProgress;
   onBack: () => void;
-  onComplete: (score: number) => void;
+  onComplete: (score: number, moveToNext?: boolean) => void;
 }
 
 export const QuizComponent = ({ quiz, moduleId, moduleTitle, progress, onBack, onComplete }: QuizComponentProps) => {
@@ -150,6 +150,20 @@ export const QuizComponent = ({ quiz, moduleId, moduleTitle, progress, onBack, o
               })}
             </div>
           </Card>
+
+          {/* Action Buttons */}
+          {passed && (
+            <div className="flex justify-center gap-4 mt-6">
+              <Button variant="outline" onClick={onBack} className="gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Back to Dashboard
+              </Button>
+              <Button onClick={() => onComplete(score, true)} className="gap-2">
+                Next Module
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     );

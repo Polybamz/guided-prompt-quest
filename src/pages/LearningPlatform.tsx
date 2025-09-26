@@ -3,6 +3,7 @@ import { ModuleCard } from "@/components/ModuleCard";
 import { ModuleContent } from "@/components/ModuleContent";
 import { QuizComponent } from "@/components/QuizComponent";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
+import { Navigation } from "@/components/Navigation";
 import { modules } from "@/data/modules";
 import { UserProgress, LearningState } from "@/types/learning";
 import { loadProgress, saveProgress, calculateOverallProgress, getNextModule } from "@/utils/progress";
@@ -47,7 +48,7 @@ export const LearningPlatform = () => {
     }));
   };
 
-  const handleQuizComplete = (score: number) => {
+  const handleQuizComplete = (score: number, moveToNext: boolean = false) => {
     const currentModuleId = learningState.selectedModule!;
     const nextModuleId = getNextModule(currentModuleId, modules);
     
@@ -64,6 +65,14 @@ export const LearningPlatform = () => {
     };
 
     updateProgress(updatedProgress);
+
+    if (moveToNext && score >= 70 && nextModuleId) {
+      setLearningState(prev => ({
+        ...prev,
+        currentView: 'module',
+        selectedModule: nextModuleId
+      }));
+    }
 
     if (score >= 70) {
       toast({
@@ -127,6 +136,13 @@ export const LearningPlatform = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <Navigation 
+        completedModules={learningState.progress.completedModules.length}
+        totalModules={modules.length}
+        overallProgress={overallProgress}
+      />
+      
       {/* Header */}
       <div className="bg-gradient-to-r from-primary to-accent text-primary-foreground">
         <div className="max-w-6xl mx-auto px-6 py-12">
