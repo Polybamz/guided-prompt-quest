@@ -9,6 +9,7 @@ import { modules } from "@/data/modules";
 import { UserProgress, LearningState } from "@/types/learning";
 import { loadProgress, saveProgress, calculateOverallProgress, getNextModule } from "@/utils/progress";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export const LearningPlatform = () => {
   const [learningState, setLearningState] = useState<LearningState>({
@@ -21,6 +22,34 @@ export const LearningPlatform = () => {
 
   const overallProgress = calculateOverallProgress(learningState.progress, modules.length);
 
+  // Check for payment success on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paymentStatus = params.get('payment');
+    
+    if (paymentStatus === 'success') {
+      const updatedProgress = {
+        ...learningState.progress,
+        hasPremiumAccess: true
+      };
+      updateProgress(updatedProgress);
+      toast({
+        title: "Premium Unlocked! 🎉",
+        description: "You now have access to all advanced modules. Thank you for your support!",
+      });
+      // Clean up URL
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (paymentStatus === 'cancelled') {
+      toast({
+        title: "Payment Cancelled",
+        description: "You can unlock premium content anytime from the dashboard.",
+        variant: "destructive"
+      });
+      // Clean up URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
   const updateProgress = (newProgress: UserProgress) => {
     saveProgress(newProgress);
     setLearningState(prev => ({
@@ -29,18 +58,25 @@ export const LearningPlatform = () => {
     }));
   };
 
-  const handlePremiumUnlock = () => {
-    // Simulate payment - in production, this would integrate with a payment processor
-    const updatedProgress = {
-      ...learningState.progress,
-      hasPremiumAccess: true
-    };
-    updateProgress(updatedProgress);
-    setShowPremiumDialog(false);
-    toast({
-      title: "Premium Unlocked! 🎉",
-      description: "You now have access to all advanced modules. Thank you for your support!",
-    });
+  const handlePremiumUnlock = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment');
+      
+      if (error) throw error;
+      
+      if (data?.url) {
+        // Open Stripe checkout in a new tab
+        window.open(data.url, '_blank');
+        setShowPremiumDialog(false);
+      }
+    } catch (error) {
+      console.error("Error creating payment:", error);
+      toast({
+        title: "Payment Error",
+        description: "Failed to create payment session. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handlePremiumClick = () => {
