@@ -1,6 +1,7 @@
 import { Progress } from "@/components/ui/progress";
 import { BookOpen, Trophy, User } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import logo from '/pmc-logo.png'
 
 interface NavigationProps {
   completedModules: number;
@@ -16,10 +17,11 @@ export const Navigation = ({ completedModules, totalModules, overallProgress }: 
           {/* Logo/Title */}
           <div className="flex items-center gap-3">
             <div className="bg-primary/10 p-2 rounded-lg">
-              <BookOpen className="h-6 w-6 text-primary" />
+            <img src={logo} alt="Logo" className="h-10"  />
+              {/* <BookOpen className="h-6 w-6 text-primary" /> */}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">Prompt Engineering</h1>
+              <h1 className="text-xl font-bold text-foreground">Trivex  PM</h1>
               <p className="text-sm text-muted-foreground">Master Class</p>
             </div>
           </div>
