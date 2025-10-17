@@ -16,7 +16,8 @@ export const loadProgress = (): UserProgress => {
     completedModules: [],
     currentModule: 'module-1',
     quizScores: {},
-    lastAccessed: new Date().toISOString()
+    lastAccessed: new Date().toISOString(),
+    hasPremiumAccess: false
   };
 };
 
@@ -46,6 +47,13 @@ export const getModuleProgress = (moduleId: string, progress: UserProgress): 'no
 export const canAccessModule = (moduleId: string, progress: UserProgress, modules: any[]): boolean => {
   const moduleIndex = modules.findIndex(m => m.id === moduleId);
   if (moduleIndex === 0) return true; // First module always accessible
+  
+  const currentModule = modules[moduleIndex];
+  
+  // Check if module is premium and user doesn't have access
+  if (currentModule.isPremium && !progress.hasPremiumAccess) {
+    return false;
+  }
   
   const previousModule = modules[moduleIndex - 1];
   return progress.completedModules.includes(previousModule.id);

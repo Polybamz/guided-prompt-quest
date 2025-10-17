@@ -6,6 +6,7 @@ export const modules: Module[] = [
     title: "Introduction to Language Models",
     description: "Understanding the fundamentals of AI language models and their influence on modern technology.",
     estimatedTime: 25,
+    videoUrl: "https://www.youtube.com/embed/aircAruvnKk",
     content: `# Introduction to Language Models
 
 Now that you appreciate the huge influence prompts have over AI systems from the previous topic, it's time to look underneath the hood and demystify how these models actually work. Understanding the fundamentals of language models will make you a better prompt engineer.
@@ -76,6 +77,7 @@ Whether you want to build a classifier, chatbot, or writing aid - the prompt eng
     title: "Understanding Different Language Models",
     description: "Exploring major language models like GPT-4, BERT, and RNNs, and staying updated with AI evolution.",
     estimatedTime: 30,
+    videoUrl: "https://www.youtube.com/embed/kCc8FmEb1nY",
     content: `# Understanding Different Language Models
 
 Now that you have a foundational grasp of language models for natural language processing let's survey some of the major models that have propelled the field of prompt engineering forward in recent years. Each model has unique capabilities, strengths, and limitations that inform what prompts will work well or poorly.
@@ -155,6 +157,7 @@ The field of AI, especially language models, is constantly changing. New models 
     title: "Crafting Effective Prompts", 
     description: "Learning key techniques for constructing high-quality prompts that reliably elicit desired AI responses.",
     estimatedTime: 35,
+    videoUrl: "https://www.youtube.com/embed/jC4v5AS4RIM",
     content: `# Crafting Effective Prompts
 
 In this lesson, you will learn the key ingredients that go into constructing high-quality prompts primed for success. We will move beyond just typing questions into a text box and, instead, strategically sculpt prompts to reliably elicit the responses we want from AIs.
@@ -241,6 +244,7 @@ In this way, you're guiding the AI to be creative within certain boundaries and 
     title: "Fine-Tuning and Advanced Customization",
     description: "Learning techniques to customize AI models through fine-tuning and prompt weighting for enhanced performance.",
     estimatedTime: 30,
+    videoUrl: "https://www.youtube.com/embed/Q9zv369Ggfk",
     content: `# Fine-Tuning Language Models for Desired Results
 
 So far, you've learned best practices for structuring high-quality prompts from scratch to achieve desired behaviours from AI systems. Now, we build on those core skills with targeted fine-tuning techniques that customise models even further for our prompt engineering needs.
@@ -335,6 +339,8 @@ This goes beyond individual prompt feedback to systematic improvement across man
     title: "Ethics, Bias, and Responsible AI", 
     description: "Understanding ethical considerations, identifying bias in AI systems, and implementing responsible AI practices.",
     estimatedTime: 40,
+    isPremium: true,
+    videoUrl: "https://www.youtube.com/embed/gV0_raKR2UQ",
     content: `# Ethical Considerations and Advanced Prompt Applications
 
 AI systems, as they are used now, can make existing social inequalities worse. This happens because biases in the data and algorithms used to train these systems can be present. If we're not careful, the questions or requests we make to these systems can also make these issues even more problematic.
@@ -450,6 +456,8 @@ By integrating responsible AI practices like these into your prompt engineering 
     title: "Advanced Strategies and Multi-Step Prompting",
     description: "Mastering sophisticated techniques like chaining prompts, combining models, and unlocking creative AI behaviors.", 
     estimatedTime: 35,
+    isPremium: true,
+    videoUrl: "https://www.youtube.com/embed/ahnGLM-RC1Y",
     content: `# Advanced Prompt Engineering Strategies
 
 We have covered core conceptual building blocks so far - now we unleash advanced strategies for truly sophisticated prompt engineering!
@@ -575,6 +583,8 @@ The possibilities are endless, and just like teaching students or employees, you
     title: "Real-World Applications Across Industries",
     description: "Exploring how prompt engineering transforms healthcare, finance, education, and creative industries.",
     estimatedTime: 30,
+    isPremium: true,
+    videoUrl: "https://www.youtube.com/embed/9hb_0TZ_MtM",
     content: `# Applications of Prompt Engineering
 
 In this final topic, we build real-world context, examples, and inspiration for applying prompt engineering across industries. This grounds the abstract capabilities we have covered in practical domains where AI prompts fuel transformation today.
@@ -720,6 +730,8 @@ The future of prompt engineering lies in these practical applications that solve
     title: "Building AI Applications - Practical Implementation",
     description: "Hands-on approach to building real-world AI applications using prompt engineering principles and best practices.",
     estimatedTime: 40,
+    isPremium: true,
+    videoUrl: "https://www.youtube.com/embed/pP2o8mErcxs",
     content: `# Building AI Applications With Prompt Engineering
 
 By now, you have built strong conceptual foundations and tactical skills across prompt design, language models, bias mitigation, and more. Now, we will bring all those pieces together into practice as you attempt to build real-world AI applications hands-on.

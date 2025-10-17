@@ -5,6 +5,8 @@ export interface Module {
   content: string;
   quiz: Quiz;
   estimatedTime: number; // in minutes
+  videoUrl?: string;
+  isPremium?: boolean;
 }
 
 export interface Quiz {
@@ -24,6 +26,7 @@ export interface UserProgress {
   currentModule: string;
   quizScores: Record<string, number>;
   lastAccessed: string;
+  hasPremiumAccess?: boolean;
 }
 
 export interface LearningState {

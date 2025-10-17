@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, CheckCircle2, Play, Lock } from "lucide-react";
+import { Clock, CheckCircle2, Play, Lock, Coffee } from "lucide-react";
 import { Module, UserProgress } from "@/types/learning";
 import { getModuleProgress, canAccessModule } from "@/utils/progress";
 
@@ -10,14 +10,17 @@ interface ModuleCardProps {
   progress: UserProgress;
   allModules: Module[];
   onModuleSelect: (moduleId: string) => void;
+  onPremiumClick?: () => void;
 }
 
-export const ModuleCard = ({ module, progress, allModules, onModuleSelect }: ModuleCardProps) => {
+export const ModuleCard = ({ module, progress, allModules, onModuleSelect, onPremiumClick }: ModuleCardProps) => {
   const status = getModuleProgress(module.id, progress);
   const canAccess = canAccessModule(module.id, progress, allModules);
   const quizScore = progress.quizScores[module.id];
+  const isPremiumLocked = module.isPremium && !progress.hasPremiumAccess;
   
   const getStatusIcon = () => {
+    if (isPremiumLocked) return <Coffee className="h-5 w-5 text-warning" />;
     if (!canAccess) return <Lock className="h-5 w-5 text-muted-foreground" />;
     if (status === 'completed') return <CheckCircle2 className="h-5 w-5 text-success" />;
     if (status === 'in-progress') return <Play className="h-5 w-5 text-primary fill-current" />;
@@ -25,14 +28,24 @@ export const ModuleCard = ({ module, progress, allModules, onModuleSelect }: Mod
   };
   
   const getStatusBadge = () => {
+    if (isPremiumLocked) return <Badge className="bg-warning text-warning-foreground gap-1"><Coffee className="h-3 w-3" />Premium</Badge>;
     if (!canAccess) return <Badge variant="secondary">Locked</Badge>;
     if (status === 'completed') return <Badge className="bg-success text-success-foreground">Completed</Badge>;
     if (status === 'in-progress') return <Badge>In Progress</Badge>;
     return <Badge variant="outline">Not Started</Badge>;
   };
 
+  const handleClick = () => {
+    if (isPremiumLocked && onPremiumClick) {
+      onPremiumClick();
+    } else if (canAccess) {
+      onModuleSelect(module.id);
+    }
+  };
+
   return (
     <Card className={`p-6 transition-all duration-200 hover:shadow-md border-l-4 ${
+      isPremiumLocked ? 'border-l-warning bg-warning/5' :
       status === 'completed' ? 'border-l-success bg-success/5' :
       status === 'in-progress' ? 'border-l-primary bg-primary/5' :
       !canAccess ? 'border-l-muted bg-muted/20' :
@@ -70,15 +83,20 @@ export const ModuleCard = ({ module, progress, allModules, onModuleSelect }: Mod
         
         <div className="pt-2">
           <Button 
-            onClick={() => onModuleSelect(module.id)}
-            disabled={!canAccess}
+            onClick={handleClick}
+            disabled={!canAccess && !isPremiumLocked}
             className="w-full"
-            variant={status === 'completed' ? 'outline' : 'default'}
+            variant={status === 'completed' ? 'outline' : isPremiumLocked ? 'default' : 'default'}
           >
-            {!canAccess ? 'Complete Previous Module' :
-             status === 'completed' ? 'Review Module' :
-             status === 'in-progress' ? 'Continue Learning' :
-             'Start Learning'}
+            {isPremiumLocked ? (
+              <>
+                <Coffee className="h-4 w-4 mr-2" />
+                Unlock for $5
+              </>
+            ) : !canAccess ? 'Complete Previous Module' :
+              status === 'completed' ? 'Review Module' :
+              status === 'in-progress' ? 'Continue Learning' :
+              'Start Learning'}
           </Button>
         </div>
       </div>

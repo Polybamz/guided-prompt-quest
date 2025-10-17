@@ -60,6 +60,21 @@ export const ModuleContent = ({ module, progress, totalModules, onBack, onStartQ
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-6 py-8">
+        {/* Video Lesson */}
+        {module.videoUrl && (
+          <Card className="mb-8 overflow-hidden">
+            <div className="aspect-video">
+              <iframe
+                src={module.videoUrl}
+                title={`${module.title} - Video Lesson`}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </Card>
+        )}
+
         <Card className="p-8">
           <div className="prose prose-lg max-w-none">
             <ReactMarkdown 

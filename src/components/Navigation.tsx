@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { BookOpen, Trophy, User } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface NavigationProps {
   completedModules: number;
@@ -41,9 +41,12 @@ export const Navigation = ({ completedModules, totalModules, overallProgress }: 
               </div>
             </div>
 
-            {/* User Avatar */}
-            <div className="bg-primary/10 p-2 rounded-full">
-              <User className="h-4 w-4 text-primary" />
+            {/* Theme Toggle & User Avatar */}
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <div className="bg-primary/10 p-2 rounded-full">
+                <User className="h-4 w-4 text-primary" />
+              </div>
             </div>
           </div>
         </div>

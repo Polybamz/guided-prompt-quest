@@ -4,6 +4,7 @@ import { ModuleContent } from "@/components/ModuleContent";
 import { QuizComponent } from "@/components/QuizComponent";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { Navigation } from "@/components/Navigation";
+import { PremiumDialog } from "@/components/PremiumDialog";
 import { modules } from "@/data/modules";
 import { UserProgress, LearningState } from "@/types/learning";
 import { loadProgress, saveProgress, calculateOverallProgress, getNextModule } from "@/utils/progress";
@@ -16,6 +17,7 @@ export const LearningPlatform = () => {
     currentView: 'dashboard',
     selectedModule: null
   });
+  const [showPremiumDialog, setShowPremiumDialog] = useState(false);
 
   const overallProgress = calculateOverallProgress(learningState.progress, modules.length);
 
@@ -25,6 +27,24 @@ export const LearningPlatform = () => {
       ...prev,
       progress: newProgress
     }));
+  };
+
+  const handlePremiumUnlock = () => {
+    // Simulate payment - in production, this would integrate with a payment processor
+    const updatedProgress = {
+      ...learningState.progress,
+      hasPremiumAccess: true
+    };
+    updateProgress(updatedProgress);
+    setShowPremiumDialog(false);
+    toast({
+      title: "Premium Unlocked! 🎉",
+      description: "You now have access to all advanced modules. Thank you for your support!",
+    });
+  };
+
+  const handlePremiumClick = () => {
+    setShowPremiumDialog(true);
   };
 
   const handleModuleSelect = (moduleId: string) => {
@@ -201,6 +221,7 @@ export const LearningPlatform = () => {
                   progress={learningState.progress}
                   allModules={modules}
                   onModuleSelect={handleModuleSelect}
+                  onPremiumClick={handlePremiumClick}
                 />
               ))}
             </div>
@@ -223,6 +244,13 @@ export const LearningPlatform = () => {
           </div>
         </div>
       </div>
+      
+      {/* Premium Dialog */}
+      <PremiumDialog 
+        open={showPremiumDialog} 
+        onOpenChange={setShowPremiumDialog}
+        onUnlock={handlePremiumUnlock}
+      />
     </div>
   );
 };
