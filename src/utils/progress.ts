@@ -31,7 +31,9 @@ export const saveProgress = (progress: UserProgress): void => {
 };
 
 export const calculateOverallProgress = (progress: UserProgress, totalModules: number): number => {
-  return Math.round((progress.completedModules.length / totalModules) * 100);
+  const result = Math.round((progress.completedModules.length / totalModules) * 100);
+  console.log(result)
+  return result;
 };
 
 export const getModuleProgress = (moduleId: string, progress: UserProgress): 'not-started' | 'in-progress' | 'completed' => {

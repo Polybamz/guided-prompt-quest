@@ -9,9 +9,15 @@ import { modules } from "@/data/modules";
 import { UserProgress, LearningState } from "@/types/learning";
 import { loadProgress, saveProgress, calculateOverallProgress, getNextModule } from "@/utils/progress";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { Stars } from "@/components/ui/stars";
+import { useSearchParams } from "react-router-dom";
+import { NetworkStatus } from "@/components/ui/connection";
+import { access } from "fs";
 
 export const LearningPlatform = () => {
+  const [searchParams] = useSearchParams()
+  const access_code = searchParams.get('code')
+  const [upgrading, setUpgrading] = useState<boolean>(false)
   const [learningState, setLearningState] = useState<LearningState>({
     modules,
     progress: loadProgress(),
@@ -26,7 +32,7 @@ export const LearningPlatform = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const paymentStatus = params.get('payment');
-    
+
     if (paymentStatus === 'success') {
       const updatedProgress = {
         ...learningState.progress,
@@ -50,6 +56,8 @@ export const LearningPlatform = () => {
     }
   }, []);
 
+ 
+
   const updateProgress = (newProgress: UserProgress) => {
     saveProgress(newProgress);
     setLearningState(prev => ({
@@ -58,19 +66,73 @@ export const LearningPlatform = () => {
     }));
   };
 
-  const handlePremiumUnlock = async () => {
+  const cleanUrl = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('code');
+    window.history.replaceState({}, '', url.toString());
+  }
+ useEffect(() => {
+    if (!access_code) return;
+    validateAccessCode(access_code);
+  }, [access_code]);
+
+  const validateAccessCode = async (code: string) => {
+    setUpgrading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-payment');
-      
-      if (error) throw error;
-      
-      if (data?.url) {
+      const res = await fetch(
+        `https://payment-api-njxi.onrender.com/api/payment/validate-code/${code}`
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || "Invalid access code");
+
+      updateProgress({
+        ...learningState.progress,
+        hasPremiumAccess: true,
+      });
+
+      toast({
+        title: "Premium Activated 🎉",
+        description: "Access code verified successfully.",
+      });
+
+      cleanUrl();
+    } catch (err: any) {
+      toast({
+        title: "Verification Failed",
+        description: err.message || "Unable to validate access code",
+        variant: "destructive",
+      });
+    } finally {
+      setUpgrading(false);
+    }
+  };
+
+  
+
+  const handlePremiumUnlock = async (email:string) => {
+    console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE',email)
+    setUpgrading(true)
+    try {
+      const response = await fetch('https://payment-api-njxi.onrender.com/api/payment/checkout', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email  }),
+
+      })  
+      console.log(response)
+      if (!response.ok) throw 'Error generating checkout';
+      const data = await response.json()
+      setUpgrading(false)
+      if (data?.checkout_url) {
         // Open Stripe checkout in a new tab
-        window.open(data.url, '_blank');
+        window.open(data.checkout_url, '_blank');
         setShowPremiumDialog(false);
       }
     } catch (error) {
-      console.error("Error creating payment:", error);
+      setUpgrading(false)
       toast({
         title: "Payment Error",
         description: "Failed to create payment session. Please try again.",
@@ -89,14 +151,13 @@ export const LearningPlatform = () => {
       currentModule: moduleId
     };
     updateProgress(updatedProgress);
-    
+
     setLearningState(prev => ({
       ...prev,
       currentView: 'module',
       selectedModule: moduleId
     }));
   };
-
   const handleStartQuiz = () => {
     setLearningState(prev => ({
       ...prev,
@@ -107,7 +168,7 @@ export const LearningPlatform = () => {
   const handleQuizComplete = (score: number, moveToNext: boolean = false) => {
     const currentModuleId = learningState.selectedModule!;
     const nextModuleId = getNextModule(currentModuleId, modules);
-    
+
     const updatedProgress = {
       ...learningState.progress,
       quizScores: {
@@ -190,44 +251,49 @@ export const LearningPlatform = () => {
     }
   }
 
+
+  console.log('////////////////////////////////', learningState)
   return (
     <div className="min-h-screen bg-background">
+      <NetworkStatus />
       {/* Navigation */}
-      <Navigation 
+      <Navigation
         completedModules={learningState.progress.completedModules.length}
         totalModules={modules.length}
         overallProgress={overallProgress}
       />
-      
+
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-accent text-primary-foreground">
+      <div className="bg-gradient-to-r from-muted to-accent dark:text-white text-primary-foreground">
         <div className="max-w-6xl mx-auto px-6 py-12">
           <div className="text-center space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold">Prompt Engineering Master Class</h1>
-            <p className="text-xl text-primary-foreground/90 max-w-3xl mx-auto">
-              Master the art and science of prompt engineering. Learn to craft effective prompts, 
+            <p className="text-xl text-primary-foreground/90 dark:text-gray-300 max-w-3xl mx-auto">
+              Master the art and science of prompt engineering. Learn to craft effective prompts,
               understand AI language models, and build real-world applications.
             </p>
             <div className="flex items-center justify-center gap-6 mt-8">
               <div className="text-center">
                 <div className="text-2xl font-bold">{modules.length}</div>
-                <div className="text-sm text-primary-foreground/80">Modules</div>
+                <div className="text-sm text-primary-foreground/80 dark:text-white">Modules</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">{learningState.progress.completedModules.length}</div>
-                <div className="text-sm text-primary-foreground/80">Completed</div>
+                <div className="text-sm text-primary-foreground/80 dark:text-white ">Completed</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">{overallProgress}%</div>
-                <div className="text-sm text-primary-foreground/80">Progress</div>
+                <div className="text-sm text-primary-foreground/80 dark:text-white">Progress</div>
               </div>
             </div>
           </div>
+          <Stars />
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-8">
+
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar - Progress */}
           <div className="lg:col-span-1">
@@ -239,12 +305,12 @@ export const LearningPlatform = () => {
               />
             </div>
           </div>
-
+          {/* <div className="sticky top-8 p-16 bg-red-400"></div> */}
           {/* Main Content - Modules */}
           <div className="lg:col-span-3">
             <div className="space-y-4 mb-8">
               <h2 className="text-2xl font-bold text-foreground">Course Modules</h2>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground ">
                 Complete each module in order and take the quiz to unlock the next one.
               </p>
             </div>
@@ -280,12 +346,14 @@ export const LearningPlatform = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Premium Dialog */}
-      <PremiumDialog 
-        open={showPremiumDialog} 
+      <PremiumDialog
+        open={showPremiumDialog}
         onOpenChange={setShowPremiumDialog}
         onUnlock={handlePremiumUnlock}
+        onCheckCode={validateAccessCode}
+        loading={upgrading}
       />
     </div>
   );

@@ -6,6 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { CheckCircle2, XCircle, ArrowLeft, Trophy, BookOpen, ArrowRight } from "lucide-react";
 import { Quiz, UserProgress } from "@/types/learning";
+import { NetworkStatus } from "./ui/connection";
 
 interface QuizComponentProps {
   quiz: Quiz;
@@ -66,6 +67,8 @@ export const QuizComponent = ({ quiz, moduleId, moduleTitle, progress, onBack, o
 
     return (
       <div className="min-h-screen bg-background">
+            <NetworkStatus/>
+        
         <div className="max-w-3xl mx-auto px-6 py-8">
           {/* Header */}
           <div className="mb-8">
@@ -152,6 +155,10 @@ export const QuizComponent = ({ quiz, moduleId, moduleTitle, progress, onBack, o
           </Card>
 
           {/* Action Buttons */}
+          {!passed && <Button onClick={onBack} className="gap-2">
+                Retake Quiz
+                {/* <ArrowRight className="h-4 w-4" /> */}
+              </Button> }
           {passed && (
             <div className="flex justify-center gap-4 mt-6">
               <Button variant="outline" onClick={onBack} className="gap-2">

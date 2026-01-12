@@ -45,7 +45,7 @@ export const ModuleCard = ({ module, progress, allModules, onModuleSelect, onPre
 
   return (
     <Card className={`p-6 transition-all duration-200 hover:shadow-md border-l-4 ${
-      isPremiumLocked ? 'border-l-warning bg-warning/5' :
+      isPremiumLocked ? 'border-l-warning bg-warning/5 ' :
       status === 'completed' ? 'border-l-success bg-success/5' :
       status === 'in-progress' ? 'border-l-primary bg-primary/5' :
       !canAccess ? 'border-l-muted bg-muted/20' :
@@ -91,7 +91,7 @@ export const ModuleCard = ({ module, progress, allModules, onModuleSelect, onPre
             {isPremiumLocked ? (
               <>
                 <Coffee className="h-4 w-4 mr-2" />
-                Unlock for $5
+                Unlock
               </>
             ) : !canAccess ? 'Complete Previous Module' :
               status === 'completed' ? 'Review Module' :

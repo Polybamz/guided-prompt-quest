@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, BookOpen, Clock, Trophy } from "lucide-react";
 import { Module, UserProgress } from "@/types/learning";
 import ReactMarkdown from 'react-markdown';
-
+import { NetworkStatus } from "./ui/connection";
 interface ModuleContentProps {
   module: Module;
   progress: UserProgress;
@@ -16,9 +16,10 @@ interface ModuleContentProps {
 export const ModuleContent = ({ module, progress, totalModules, onBack, onStartQuiz }: ModuleContentProps) => {
   const isCompleted = progress.completedModules.includes(module.id);
   const quizScore = progress.quizScores[module.id];
-  
   return (
     <div className="min-h-screen bg-background">
+        <NetworkStatus/>
+    
       {/* Header */}
       <div className="bg-card border-b sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-6 py-4">
@@ -62,7 +63,7 @@ export const ModuleContent = ({ module, progress, totalModules, onBack, onStartQ
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Video Lesson */}
         {module.videoUrl && (
-          <Card className="mb-8 overflow-hidden">
+          <Card className="mb-8 overflow-hidden  ">
             <div className="aspect-video">
               <iframe
                 src={module.videoUrl}
@@ -117,6 +118,7 @@ export const ModuleContent = ({ module, progress, totalModules, onBack, onStartQ
           </Card>
         </div>
       </div>
+        {/* <Stars/> */}
     </div>
   );
 };

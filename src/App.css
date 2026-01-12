@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+.ToastViewport {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: auto;
+  z-index: 10000;
+}

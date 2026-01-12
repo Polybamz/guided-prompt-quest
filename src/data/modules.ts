@@ -1,6 +1,17 @@
 import { Module } from "@/types/learning";
 
 export const modules: Module[] = [
+  // {
+  //   id: "intoduction",
+  //   title: "",
+  //   description:'',
+  //   estimatedTime: 3,
+  //   videoUrl:'',
+  //   content:'',
+  //   quiz:  {
+  //     questions:[]
+  //   }
+  // },
   {
     id: "module-1",
     title: "Introduction to Language Models",

@@ -126,3 +126,25 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+
+@keyframes floatStar {
+  from {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: translateY(-200px);
+    opacity: 1;
+  }
+
+}
+
+.stars {
+  animation-name: floatStar;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  background-color: aqua;
+}
