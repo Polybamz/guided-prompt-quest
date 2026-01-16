@@ -111,7 +111,6 @@ export const LearningPlatform = () => {
   
 
   const handlePremiumUnlock = async (email:string) => {
-    console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE',email)
     setUpgrading(true)
     try {
       const response = await fetch('https://payment-api-njxi.onrender.com/api/payment/checkout', {
@@ -122,7 +121,6 @@ export const LearningPlatform = () => {
         body: JSON.stringify({ email  }),
 
       })  
-      console.log(response)
       if (!response.ok) throw 'Error generating checkout';
       const data = await response.json()
       setUpgrading(false)
@@ -252,7 +250,6 @@ export const LearningPlatform = () => {
   }
 
 
-  console.log('////////////////////////////////', learningState)
   return (
     <div className="min-h-screen bg-background">
       <NetworkStatus />

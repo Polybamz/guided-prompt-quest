@@ -1,17 +1,18 @@
 import { Module } from "@/types/learning";
 
 export const modules: Module[] = [
-  // {
-  //   id: "intoduction",
-  //   title: "",
-  //   description:'',
-  //   estimatedTime: 3,
-  //   videoUrl:'',
-  //   content:'',
-  //   quiz:  {
-  //     questions:[]
-  //   }
-  // },
+  {
+    id: "intoduction",
+    title: "",
+    description:'',
+    estimatedTime: 3,
+    videoUrl:'',
+    content:'Ever wonder how chatbots hold conversations, or how AI assistants craft creative text? It all starts with a prompt, the secret sauce that unlocks the potential of these powerful tools.To start, let\'s define what we mean by a "prompt". A prompt is simply some form of textual input that is provided to an AI model to elicit a desired response or behaviour from the system. For example, imagine an AI assistant chatbot - you might provide a prompt like "What will the weather be like tomorrow?" to get a weather forecast in response. The prompt is the question that guides what kind of output you want the AI to generate. Prompts have become essential in modern AI because many systems today rely on large neural network models trained on vast datasets, which don\'t inherently have any specific purpose. Prompts allow us to steer these expansive but unspecialised models toward useful applications by telling them what we want them to do. Think of prompts as instructions that focus on AI\'s capabilities.While the idea of providing textual cues to influence system behaviour has existed for decades, the methodology of prompt engineering really emerged alongside the rise of large language models like GPT-3 and GPT-4 in recent years. The scale and flexibility of these models opened new possibilities for using prompts to tap into their capabilities.As an introductory example, say you fine-tuned GPT-4 on a small dataset of Shakespeare plays - the model may have learned general patterns of the English language but doesn\'t know you specifically want it to generate Shakespeare-style texts. However, providing a prompt like "The following text is written in Shakespearean style:" triggers the model to produce much more relevant output.Through this course, you will gain a strong foundation in crafting and structuring prompts like this to build all kinds of AI applications, leverage different language models optimally, address biases, and apply prompt engineering in real-world contexts.',
+    quiz:  {
+      questions:[],
+      
+    }
+  },
   {
     id: "module-1",
     title: "Introduction to Language Models",
