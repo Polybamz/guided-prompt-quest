@@ -5,24 +5,26 @@ import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { CheckCircle2, XCircle, ArrowLeft, Trophy, BookOpen, ArrowRight } from "lucide-react";
-import { Quiz, UserProgress } from "@/types/learning";
+import { Quiz, UserProgress, Module } from "@/types/learning";
 import { NetworkStatus } from "./ui/connection";
 
 interface QuizComponentProps {
   quiz: Quiz;
   moduleId: string;
   moduleTitle: string;
+  module: Module;
   progress: UserProgress;
   onBack: () => void;
   onComplete: (score: number, moveToNext?: boolean) => void;
+  handlePremiumClick: (p0: boolean)=>void;
 }
 
-export const QuizComponent = ({ quiz, moduleId, moduleTitle, progress, onBack, onComplete }: QuizComponentProps) => {
+export const QuizComponent = ({ quiz, moduleId, moduleTitle, progress, onBack, onComplete, module,  handlePremiumClick }: QuizComponentProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
   const [quizComplete, setQuizComplete] = useState(false);
-
+   const isPremiumLocked = module.isPremium && !progress.hasPremiumAccess;
   const currentQuestion = quiz.questions[currentQuestionIndex];
   const totalQuestions = quiz.questions.length;
   const progressPercentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
@@ -165,10 +167,14 @@ export const QuizComponent = ({ quiz, moduleId, moduleTitle, progress, onBack, o
                 <ArrowLeft className="h-4 w-4" />
                 Back to Dashboard
               </Button>
-              <Button onClick={() => onComplete(score, true)} className="gap-2">
+              {!isPremiumLocked ?
+               <Button onClick={()=>{handlePremiumClick(true)}}>
+                Unlook All Module
+                </Button> 
+                : <Button onClick={() => onComplete(score, true)} className="gap-2">
                 Next Module
                 <ArrowRight className="h-4 w-4" />
-              </Button>
+              </Button>}
             </div>
           )}
         </div>

@@ -12,12 +12,13 @@ import { toast } from "@/hooks/use-toast";
 import { Stars } from "@/components/ui/stars";
 import { useSearchParams } from "react-router-dom";
 import { NetworkStatus } from "@/components/ui/connection";
-import { access } from "fs";
+import CodeDialog from "@/components/CodeDialog";
 
 export const LearningPlatform = () => {
   const [searchParams] = useSearchParams()
   const access_code = searchParams.get('code')
   const [upgrading, setUpgrading] = useState<boolean>(false)
+  const [openCD, setOpenCD] = useState<boolean>(false)
   const [learningState, setLearningState] = useState<LearningState>({
     modules,
     progress: loadProgress(),
@@ -25,26 +26,28 @@ export const LearningPlatform = () => {
     selectedModule: null
   });
   const [showPremiumDialog, setShowPremiumDialog] = useState(false);
-
+ 
   const overallProgress = calculateOverallProgress(learningState.progress, modules.length);
 
   // Check for payment success on mount
+   
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const paymentStatus = params.get('payment');
 
-    if (paymentStatus === 'success') {
-      const updatedProgress = {
-        ...learningState.progress,
-        hasPremiumAccess: true
-      };
-      updateProgress(updatedProgress);
-      toast({
-        title: "Premium Unlocked! 🎉",
-        description: "You now have access to all advanced modules. Thank you for your support!",
-      });
-      // Clean up URL
-      window.history.replaceState({}, '', window.location.pathname);
+    if (access_code) {
+      setOpenCD(true)
+      // const updatedProgress = {
+      //   ...learningState.progress,
+      //   hasPremiumAccess: true
+      // };
+      // updateProgress(updatedProgress);
+      // toast({
+      //   title: "Premium Unlocked! 🎉",
+      //   description: "You now have access to all advanced modules. Thank you for your support!",
+      // });
+      // // Clean up URL
+      // window.history.replaceState({}, '', window.location.pathname);
     } else if (paymentStatus === 'cancelled') {
       toast({
         title: "Payment Cancelled",
@@ -103,6 +106,7 @@ export const LearningPlatform = () => {
         description: err.message || "Unable to validate access code",
         variant: "destructive",
       });
+      cleanUrl()
     } finally {
       setUpgrading(false);
     }
@@ -221,7 +225,7 @@ export const LearningPlatform = () => {
   if (learningState.currentView === 'quiz' && learningState.selectedModule) {
     const module = modules.find(m => m.id === learningState.selectedModule);
     if (module) {
-      return (
+      return (<>
         <QuizComponent
           quiz={module.quiz}
           moduleId={module.id}
@@ -229,7 +233,18 @@ export const LearningPlatform = () => {
           progress={learningState.progress}
           onBack={handleBackToModule}
           onComplete={handleQuizComplete}
+          module={module}
+          handlePremiumClick={setShowPremiumDialog}
         />
+         {/* Premium Dialog */}
+      <PremiumDialog
+        open={showPremiumDialog}
+        onOpenChange={setShowPremiumDialog}
+        onUnlock={handlePremiumUnlock}
+        onCheckCode={validateAccessCode}
+        loading={upgrading}
+      />
+        </>
       );
     }
   }
@@ -248,8 +263,8 @@ export const LearningPlatform = () => {
       );
     }
   }
-
-
+// localStorage.clear()
+const sum: number = Object.values(modules).reduce((acc,current)=> acc + current.estimatedTime, 0)
   return (
     <div className="min-h-screen bg-background">
       <NetworkStatus />
@@ -258,6 +273,7 @@ export const LearningPlatform = () => {
         completedModules={learningState.progress.completedModules.length}
         totalModules={modules.length}
         overallProgress={overallProgress}
+        hours={`${Math.floor(sum/60)} hours, ${sum%60} minutes`}
       />
 
       {/* Header */}
@@ -313,7 +329,7 @@ export const LearningPlatform = () => {
             </div>
 
             <div className="grid gap-6">
-              {modules.map((module) => (
+              {modules.map((module, index) => (
                 <ModuleCard
                   key={module.id}
                   module={module}
@@ -321,6 +337,7 @@ export const LearningPlatform = () => {
                   allModules={modules}
                   onModuleSelect={handleModuleSelect}
                   onPremiumClick={handlePremiumClick}
+                  index={index}
                 />
               ))}
             </div>
@@ -351,6 +368,11 @@ export const LearningPlatform = () => {
         onUnlock={handlePremiumUnlock}
         onCheckCode={validateAccessCode}
         loading={upgrading}
+      />
+      <CodeDialog
+        onOpenChange={setOpenCD}
+        open={openCD}
+        code={access_code}
       />
     </div>
   );

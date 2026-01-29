@@ -11,9 +11,10 @@ interface ModuleCardProps {
   allModules: Module[];
   onModuleSelect: (moduleId: string) => void;
   onPremiumClick?: () => void;
+  index:number
 }
 
-export const ModuleCard = ({ module, progress, allModules, onModuleSelect, onPremiumClick }: ModuleCardProps) => {
+export const ModuleCard = ({ module, progress, allModules, onModuleSelect, onPremiumClick, index }: ModuleCardProps) => {
   const status = getModuleProgress(module.id, progress);
   const canAccess = canAccessModule(module.id, progress, allModules);
   const quizScore = progress.quizScores[module.id];
@@ -45,6 +46,7 @@ export const ModuleCard = ({ module, progress, allModules, onModuleSelect, onPre
 
   return (
     <Card className={`p-6 transition-all duration-200 hover:shadow-md border-l-4 ${
+      index > 1 && isPremiumLocked ? 'blur' :
       isPremiumLocked ? 'border-l-warning bg-warning/5 ' :
       status === 'completed' ? 'border-l-success bg-success/5' :
       status === 'in-progress' ? 'border-l-primary bg-primary/5' :

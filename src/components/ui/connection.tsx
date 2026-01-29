@@ -1,7 +1,7 @@
 import React from 'react'
 export const NetworkStatus = () => {
     const [isOnline, setIsOnline] = React.useState<boolean>(navigator.onLine)
-    const [prevIsOnline, setPrevIsOnline] = React.useState<boolean>(true)
+    const [prevIsOnline, setPrevIsOnline] = React.useState<boolean>(navigator.onLine)
     const [open, setOpen] = React.useState<boolean>(true)
     const [message, setMassage] = React.useState<string>('Offline')
 

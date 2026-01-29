@@ -5,8 +5,10 @@ import { ArrowLeft, BookOpen, Clock, Trophy } from "lucide-react";
 import { Module, UserProgress } from "@/types/learning";
 import ReactMarkdown from 'react-markdown';
 import { NetworkStatus } from "./ui/connection";
+import { Children } from "react";
 interface ModuleContentProps {
   module: Module;
+
   progress: UserProgress;
   totalModules: number;
   onBack: () => void;
@@ -15,6 +17,7 @@ interface ModuleContentProps {
 
 export const ModuleContent = ({ module, progress, totalModules, onBack, onStartQuiz }: ModuleContentProps) => {
   const isCompleted = progress.completedModules.includes(module.id);
+  const isPremiumLocked = module.isPremium && !progress.hasPremiumAccess;
   const quizScore = progress.quizScores[module.id];
   return (
     <div className="min-h-screen bg-background">
@@ -88,6 +91,7 @@ export const ModuleContent = ({ module, progress, totalModules, onBack, onStartQ
                 li: ({children}) => <li className="text-foreground">{children}</li>,
                 strong: ({children}) => <strong className="font-semibold text-foreground">{children}</strong>,
                 code: ({children}) => <code className="bg-muted px-2 py-1 rounded text-sm font-mono">{children}</code>,
+                // img: ({children})=> <img src={children} alt="img"/>,
                 blockquote: ({children}) => (
                   <blockquote className="border-l-4 border-primary pl-6 my-6 italic text-muted-foreground bg-primary/5 py-4 rounded-r-lg">
                     {children}
@@ -95,7 +99,8 @@ export const ModuleContent = ({ module, progress, totalModules, onBack, onStartQ
                 )
               }}
             >
-              {module.content}
+           {/* <div dangerouslySetInnerHTML={{__html: module.content}}></div>  */}
+             {module.content}
             </ReactMarkdown>
           </div>
         </Card>

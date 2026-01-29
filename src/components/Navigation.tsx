@@ -7,9 +7,10 @@ interface NavigationProps {
   completedModules: number;
   totalModules: number;
   overallProgress: number;
+  hours:string;
 }
 
-export const Navigation = ({ completedModules, totalModules, overallProgress }: NavigationProps) => {
+export const Navigation = ({ completedModules, totalModules, overallProgress, hours }: NavigationProps) => {
   return (
     <nav className="bg-card border-b border-border">
       <div className="max-w-6xl mx-auto px-6 py-4">
@@ -40,6 +41,8 @@ export const Navigation = ({ completedModules, totalModules, overallProgress }: 
                 <span className="text-muted-foreground font-medium">
                   {overallProgress}%
                 </span>
+                <p className=" font-bold">|</p>
+                <p><strong>Time:</strong> {hours}</p>
               </div>
             </div>
 

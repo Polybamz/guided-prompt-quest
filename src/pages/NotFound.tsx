@@ -14,7 +14,7 @@ const NotFound = () => {
       <section className="max-w-4xl w-full bg-white shadow-lg rounded-2xl overflow-hidden grid md:grid-cols-2">
         <div className="p-10 flex flex-col justify-center gap-6">
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 text-indigo-700 font-bold">
+            <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 text-primary font-bold">
               404
             </span>
             <h1 className="text-2xl md:text-3xl font-semibold text-gray-800">Page not found</h1>

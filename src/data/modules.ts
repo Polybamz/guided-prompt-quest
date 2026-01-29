@@ -1,256 +1,421 @@
 import { Module } from "@/types/learning";
 
 export const modules: Module[] = [
-  {
-    id: "intoduction",
-    title: "",
-    description:'',
-    estimatedTime: 3,
-    videoUrl:'',
-    content:'Ever wonder how chatbots hold conversations, or how AI assistants craft creative text? It all starts with a prompt, the secret sauce that unlocks the potential of these powerful tools.To start, let\'s define what we mean by a "prompt". A prompt is simply some form of textual input that is provided to an AI model to elicit a desired response or behaviour from the system. For example, imagine an AI assistant chatbot - you might provide a prompt like "What will the weather be like tomorrow?" to get a weather forecast in response. The prompt is the question that guides what kind of output you want the AI to generate. Prompts have become essential in modern AI because many systems today rely on large neural network models trained on vast datasets, which don\'t inherently have any specific purpose. Prompts allow us to steer these expansive but unspecialised models toward useful applications by telling them what we want them to do. Think of prompts as instructions that focus on AI\'s capabilities.While the idea of providing textual cues to influence system behaviour has existed for decades, the methodology of prompt engineering really emerged alongside the rise of large language models like GPT-3 and GPT-4 in recent years. The scale and flexibility of these models opened new possibilities for using prompts to tap into their capabilities.As an introductory example, say you fine-tuned GPT-4 on a small dataset of Shakespeare plays - the model may have learned general patterns of the English language but doesn\'t know you specifically want it to generate Shakespeare-style texts. However, providing a prompt like "The following text is written in Shakespearean style:" triggers the model to produce much more relevant output.Through this course, you will gain a strong foundation in crafting and structuring prompts like this to build all kinds of AI applications, leverage different language models optimally, address biases, and apply prompt engineering in real-world contexts.',
-    quiz:  {
-      questions:[],
+ {
+  id: "fundamentals-of-prompting",
+  title: "Fundamentals of Prompting",
+  description:
+    "Learn what prompts are, why prompt engineering matters, and how in-context learning enables models to perform tasks without retraining.",
+  estimatedTime: 20,
+  isPremium: false,
+
+  content: `
+## Fundamentals of Prompting
+
+### What Is a Prompt?
+A **prompt** is the input given to a Large Language Model (LLM) to generate a response.  
+It can be a question, instruction, or structured text that guides the model’s output.
+
+From an engineering perspective, prompts act as **soft programs**. Instead of writing deterministic code, we guide a probabilistic system by carefully crafting instructions and context.
+
+---
+
+### What Is Prompt Engineering?
+**Prompt engineering** is the practice of designing prompts that effectively leverage the knowledge already inside a model.
+
+Unlike traditional programming:
+- There is no direct control flow
+- The model is a black box
+- We iteratively refine inputs based on observed outputs
+
+The goal is to **guide behavior**, not to hard-code logic.
+
+---
+
+### Why Prompt Engineering Matters
+LLMs are trained to continue text plausibly—not to understand intent perfectly.
+
+- Poor prompts → irrelevant, inconsistent, or incorrect outputs
+- Well-designed prompts → strong performance, even from smaller models
+
+Prompt engineering is often the **fastest and cheapest way** to adapt an LLM:
+- No retraining required
+- No model weight updates
+- Easy to iterate and deploy
+
+However, it’s not a silver bullet. Complex systems may require:
+- Retrieval pipelines
+- Fine-tuning
+- External tools or data
+
+---
+
+### In-Context Learning
+**In-context learning** allows models to learn tasks directly from examples inside the prompt.
+
+- **Zero-shot prompting**: Only instructions, no examples
+- **Few-shot prompting**: A small number of examples (e.g., 3-shot, 5-shot)
+
+By seeing examples, the model infers patterns and applies them to new inputs.
+
+Research (e.g., *“Language Models are Few-Shot Learners”*) showed this capability clearly in GPT-3.
+
+---
+
+### Practical Considerations
+- Few-shot examples often improve accuracy
+- Newer models may perform well with clear zero-shot instructions
+- More examples increase cost and latency
+
+**Best practice:** Experiment to find the balance between clarity, performance, and prompt length.
+
+---
+
+### Key Takeaway
+Prompts provide both **instructions** and **context**.  
+They can include task descriptions, relevant information, and examples—making them the foundation of effective LLM applications.
+`,
+
+  quiz: {
+    questions: [
+      {
+        id: "q1",
+        question: "From an engineering perspective, what is a prompt best described as?",
+        options: [
+          "A dataset used to retrain the model",
+          "A soft program that guides model behavior",
+          "A deterministic algorithm",
+          "A model weight update"
+        ],
+        correctAnswer: 1,
+        explanation:
+          "Prompts act as soft programs, guiding the probabilistic behavior of the model without changing its weights."
+      },
+      {
+        id: "q2",
+        question: "Why is prompt engineering often preferred over retraining a model?",
+        options: [
+          "It permanently improves the model",
+          "It requires access to model internals",
+          "It is faster and requires no weight updates",
+          "It removes probabilistic behavior"
+        ],
+        correctAnswer: 2,
+        explanation:
+          "Prompt engineering adapts model behavior quickly without retraining or modifying model weights."
+      },
+      {
+        id: "q3",
+        question: "What is few-shot prompting?",
+        options: [
+          "Prompting with no instructions",
+          "Prompting with many training epochs",
+          "Prompting with a few examples in the input",
+          "Prompting that updates model parameters"
+        ],
+        correctAnswer: 2,
+        explanation:
+          "Few-shot prompting includes a small number of examples to help the model infer the task pattern."
+      }
+    ]
+  }
+},
+
+
+//   {
+//     id: "module-0",
+//     title: "Prompt engineering and Context engineering",
+//     description:'Prompt engineering focuses on how we design the textual inputs (prompt) to guid LLM`s behave , while context engineering is about managing the entire infomstion flow , structuring the surriounding data,tools and environment that feeds the model. ',
+//     estimatedTime: 30,
+//     videoUrl:'',
+//     content: `# Fundamentals Of Prompting
+
+// A prompt is the input given to LLM's to row out a response , it can be a question, instruction, or any text the model completes or reponds to.
+
+// From an engineering perspective, a prompt is not just casual text; it is a piece of logic to proggram the model's behavior (often called "soft programming").
+// In essence. prompt engineering means writing instruction that effectively leverage the knowledge already present in the model. Unlike traditional software where we write deterministic code, prompting is more of an interactive probability programing: we guide a black-box model with  instructions, then observe how it behaves, and refine our approach.
+
+// ### Why Promp Engineering is Needed 
+
+// LLM's are trained to continue text in in a plausible way but to get the specific output we want,  we nust craft the input skillfully. A poorly designed prompt can lead to irrelevant, inconcsistent or incurrect outputs, even from a very capable model.
+// On the other hand , a well design prompt can make even a weaker model perform surprisingly well on a given task. Prompt engineering has therefore become "the skill designing prompts guides a generative AI model toward the kind of response you actually want"
+// Importantly , prompt engineering if often the most accessible way to adapt an LLM to your needs without model retrainig. It requires no updates to the model's weeight , instead you leverage the model's already present knowledge by providing instructions and context.
+// his make prompt engineering fast to iterate on and deploy , which is why many LLM applications rellied solely on prompting . However, it's not silver bullet, more complex task often require going beyond skillfull prompting to exploring a broader context pipeline fine-tuning , or additional data.
+
+// ### In-context learning
+
+// Promt is closely tied to the concept of **In-context Learning**. Researchers discovered the with GPT-3 that  large models can learn tasks from examples given in the prompt itself, without any parameter updates. 
+
+// or instance, if you prompt the model with a few example question-answer pairs (few-shot prompting), the model can infer the pattern and apply it to a new question. If you provide no examples, expecting the model to solve the task from just instructions, that’s zero-shot prompting.
+
+
+// Few-shot prompting (sometimes called few-shot in-context learning) often improves accuracy by showing the model what format or style of answer is expected. For example, adding 5 examples makes it a “5-shot” prompt. GPT-3’s paper “Language Models are Few-Shot Learners” highlighted this ability.
+
+// However, there are diminishing returns with newer advanced models: experiments have shown GPT-4 sometimes doesn’t gain much from few-shot examples on certain tasks compared to zero-shot. This is likely because newer models are better at following instructions out-of-the-box, so a clear zero-shot instruction often suffices for them.
+
+// But in niche domains, a few examples can still boost performance significantly if the model’s training data lacked those patterns. In practice, you should experiment to find the optimal number of examples for your task: balancing performance versus the added prompt length (which increases cost and latency).
+
+
+// In summary, the fundamental idea is that prompts provide both instructions and context to the model. They can include a description of the task, relevant information or data, and examples of the task being performed.
+
+//     `,
+//     quiz:  {
+//       questions:[
+//          {
+//           id: "q1",
+//           question: "What is the primary function of a language model?",
+//           options: [
+//             "To store large amounts of text data",
+//             "To understand and generate natural human language", 
+//             "To replace human writers completely",
+//             "To translate only between programming languages"
+//           ],
+//           correctAnswer: 1,
+//           explanation: "Language models are AI systems trained to understand and generate natural human language by learning linguistic patterns from text data."
+//         },
+//       ],
       
-    }
-  },
-  {
-    id: "module-1",
-    title: "Introduction to Language Models",
-    description: "Understanding the fundamentals of AI language models and their influence on modern technology.",
-    estimatedTime: 25,
-    videoUrl: "https://www.youtube.com/embed/aircAruvnKk",
-    content: `# Introduction to Language Models
+//     }
+//   },
+//   {
+//     id: "module-1",
+//     title: "Introduction to Language Models",
+//     description: "Understanding the fundamentals of AI language models and their influence on modern technology.",
+//     estimatedTime: 25,
+//     videoUrl: "https://www.youtube.com/embed/aircAruvnKk",
+//     content: `# Introduction to Language Models
 
-Now that you appreciate the huge influence prompts have over AI systems from the previous topic, it's time to look underneath the hood and demystify how these models actually work. Understanding the fundamentals of language models will make you a better prompt engineer.
+// Now that you appreciate the huge influence prompts have over AI systems from the previous topic, it's time to look underneath the hood and demystify how these models actually work. Understanding the fundamentals of language models will make you a better prompt engineer.
 
-## What is a Language Model?
+// ## What is a Language Model?
 
-In simple terms, a language model is an AI system trained to understand and generate natural human language. It learns linguistic patterns from vast datasets of texts so it can complete sentences, answer questions, translate between languages, and more. Language models power applications like search engines, chatbots, and even creative writing aids.
+// In simple terms, a language model is an AI system trained to understand and generate natural human language. It learns linguistic patterns from vast datasets of texts so it can complete sentences, answer questions, translate between languages, and more. Language models power applications like search engines, chatbots, and even creative writing aids.
 
-These models are key for natural language processing - allowing computers to parse, interpret, and manipulate real human language effectively just as humans do. For perspective, language modelling took a great leap forward in 2020 when GPT-3 demonstrated unprecedented mastery of language simply through "reading" millions of digitised books and online writings!
+// These models are key for natural language processing - allowing computers to parse, interpret, and manipulate real human language effectively just as humans do. For perspective, language modelling took a great leap forward in 2020 when GPT-3 demonstrated unprecedented mastery of language simply through "reading" millions of digitised books and online writings!
 
-## Key Components
+// ## Key Components
 
-Language models contain different key components:
-- **Encoder**: Tokenises input text into numerical representations
-- **Decoder**: Generates tokenisations back into readable text  
-- **Attention Mechanism**: Learns contextual relationships between tokens
+// Language models contain different key components:
+// - **Encoder**: Tokenises input text into numerical representations
+// - **Decoder**: Generates tokenisations back into readable text  
+// - **Attention Mechanism**: Learns contextual relationships between tokens
 
-We will explore details of architectures like transformers and RNNs later.
+// We will explore details of architectures like transformers and RNNs later.
 
-## Why This Matters
+// ## Why This Matters
 
-Language models form the backbone of understanding and generating natural language. Their capabilities to interpret prompts and texts make all kinds of AI applications possible.
+// Language models form the backbone of understanding and generating natural language. Their capabilities to interpret prompts and texts make all kinds of AI applications possible.
 
-Whether you want to build a classifier, chatbot, or writing aid - the prompt engineering techniques covered in this course will show you how to steer these models toward serving useful needs.`,
-    quiz: {
-      questions: [
-        {
-          id: "q1",
-          question: "What is the primary function of a language model?",
-          options: [
-            "To store large amounts of text data",
-            "To understand and generate natural human language", 
-            "To replace human writers completely",
-            "To translate only between programming languages"
-          ],
-          correctAnswer: 1,
-          explanation: "Language models are AI systems trained to understand and generate natural human language by learning linguistic patterns from text data."
-        },
-        {
-          id: "q2", 
-          question: "Which component of a language model learns contextual relationships between tokens?",
-          options: [
-            "Encoder",
-            "Decoder", 
-            "Attention Mechanism",
-            "Database"
-          ],
-          correctAnswer: 2,
-          explanation: "The attention mechanism is responsible for learning contextual relationships between tokens in the input."
-        },
-        {
-          id: "q3",
-          question: "When did GPT-3 demonstrate unprecedented mastery of language?",
-          options: [
-            "2018",
-            "2020",
-            "2022", 
-            "2024"
-          ],
-          correctAnswer: 1,
-          explanation: "GPT-3 was released in 2020 and demonstrated unprecedented language capabilities by learning from millions of digitised texts."
-        }
-      ]
-    }
-  },
-  {
-    id: "module-2", 
-    title: "Understanding Different Language Models",
-    description: "Exploring major language models like GPT-4, BERT, and RNNs, and staying updated with AI evolution.",
-    estimatedTime: 30,
-    videoUrl: "https://www.youtube.com/embed/kCc8FmEb1nY",
-    content: `# Understanding Different Language Models
+// Whether you want to build a classifier, chatbot, or writing aid - the prompt engineering techniques covered in this course will show you how to steer these models toward serving useful needs.`,
+//     quiz: {
+//       questions: [
+//         {
+//           id: "q1",
+//           question: "What is the primary function of a language model?",
+//           options: [
+//             "To store large amounts of text data",
+//             "To understand and generate natural human language", 
+//             "To replace human writers completely",
+//             "To translate only between programming languages"
+//           ],
+//           correctAnswer: 1,
+//           explanation: "Language models are AI systems trained to understand and generate natural human language by learning linguistic patterns from text data."
+//         },
+//         {
+//           id: "q2", 
+//           question: "Which component of a language model learns contextual relationships between tokens?",
+//           options: [
+//             "Encoder",
+//             "Decoder", 
+//             "Attention Mechanism",
+//             "Database"
+//           ],
+//           correctAnswer: 2,
+//           explanation: "The attention mechanism is responsible for learning contextual relationships between tokens in the input."
+//         },
+//         {
+//           id: "q3",
+//           question: "When did GPT-3 demonstrate unprecedented mastery of language?",
+//           options: [
+//             "2018",
+//             "2020",
+//             "2022", 
+//             "2024"
+//           ],
+//           correctAnswer: 1,
+//           explanation: "GPT-3 was released in 2020 and demonstrated unprecedented language capabilities by learning from millions of digitised texts."
+//         }
+//       ]
+//     }
+//   },
+//   {
+//     id: "module-2", 
+//     title: "Understanding Different Language Models",
+//     description: "Exploring major language models like GPT-4, BERT, and RNNs, and staying updated with AI evolution.",
+//     estimatedTime: 30,
+//     videoUrl: "https://www.youtube.com/embed/kCc8FmEb1nY",
+//     content: `# Understanding Different Language Models
 
-Now that you have a foundational grasp of language models for natural language processing let's survey some of the major models that have propelled the field of prompt engineering forward in recent years. Each model has unique capabilities, strengths, and limitations that inform what prompts will work well or poorly.
+// Now that you have a foundational grasp of language models for natural language processing let's survey some of the major models that have propelled the field of prompt engineering forward in recent years. Each model has unique capabilities, strengths, and limitations that inform what prompts will work well or poorly.
 
-## Transformer-Based Models
+// ## Transformer-Based Models
 
-### GPT Series
-First, we will cover transformer-based language models. As you learnt, these contain special attention mechanisms to analyse relationships between input tokens. GPT-3, the model that ignited excitement around prompt engineering, is a prime example built on transformers.
+// ### GPT Series
+// First, we will cover transformer-based language models. As you learnt, these contain special attention mechanisms to analyse relationships between input tokens. GPT-3, the model that ignited excitement around prompt engineering, is a prime example built on transformers.
 
-OpenAI released GPT-4 in 2023, which is a much more powerful upgrade from its predecessor for creative content, classification, translation—you name it!
+// OpenAI released GPT-4 in 2023, which is a much more powerful upgrade from its predecessor for creative content, classification, translation—you name it!
 
-At a high level, transformers allow both flexible generation and precise task completion. However, models like GPT-4 still require fine-tuning and careful prompt design to correct for biases and ensure ethical integrity.
+// At a high level, transformers allow both flexible generation and precise task completion. However, models like GPT-4 still require fine-tuning and careful prompt design to correct for biases and ensure ethical integrity.
 
-### BERT
-Next, BERT represents another breakthrough transformer model oriented more towards natural language understanding tasks like question-answering rather than text generation. Built by Google, BERT has become enormously influential across search, semantic parsing, and language translation.
+// ### BERT
+// Next, BERT represents another breakthrough transformer model oriented more towards natural language understanding tasks like question-answering rather than text generation. Built by Google, BERT has become enormously influential across search, semantic parsing, and language translation.
 
-## RNN Models
-Finally, recurrent neural network (RNN) models also maintain relevance for sequential language tasks. Simple RNNs struggle with longer-term dependencies between tokens, but clever architectural variants like LSTMs sustain context far better across tokens.
+// ## RNN Models
+// Finally, recurrent neural network (RNN) models also maintain relevance for sequential language tasks. Simple RNNs struggle with longer-term dependencies between tokens, but clever architectural variants like LSTMs sustain context far better across tokens.
 
-## Staying Updated with AI Evolution
+// ## Staying Updated with AI Evolution
 
-### Recent Developments
-The field of AI, especially language models, is constantly changing. New models with even greater capabilities are being released all the time. Here are some recent additions to the LLM landscape:
+// ### Recent Developments
+// The field of AI, especially language models, is constantly changing. New models with even greater capabilities are being released all the time. Here are some recent additions to the LLM landscape:
 
-- **Google's Gemini and LaMDA**: Pushing boundaries of factual language understanding and dialogue generation
-- **Meta's AI Research SuperCluster (RSC)**: Enabling development of larger and more sophisticated models
-- **WuDao 2.0**: Chinese-developed model with impressive text generation and translation capabilities
+// - **Google's Gemini and LaMDA**: Pushing boundaries of factual language understanding and dialogue generation
+// - **Meta's AI Research SuperCluster (RSC)**: Enabling development of larger and more sophisticated models
+// - **WuDao 2.0**: Chinese-developed model with impressive text generation and translation capabilities
 
-### How to Stay Current
-- Follow relevant news sources and blogs specialising in AI
-- Subscribe to newsletters from research labs and AI companies  
-- Engage with online communities discussing latest breakthroughs
-- Experiment with new tools and platforms as they become available`,
-    quiz: {
-      questions: [
-        {
-          id: "q1",
-          question: "What is the main difference between GPT and BERT models?",
-          options: [
-            "GPT is for text generation, BERT is for understanding tasks",
-            "BERT is newer than GPT",
-            "GPT only works with English, BERT works with all languages",
-            "There is no difference between them"
-          ],
-          correctAnswer: 0,
-          explanation: "GPT models excel at text generation tasks, while BERT is designed primarily for natural language understanding tasks like question-answering."
-        },
-        {
-          id: "q2",
-          question: "What architectural improvement do LSTMs have over simple RNNs?", 
-          options: [
-            "They are faster to train",
-            "They can sustain context better across longer sequences",
-            "They use less memory",
-            "They only work with transformers"
-          ],
-          correctAnswer: 1,
-          explanation: "LSTMs (Long Short-Term Memory networks) can maintain context much better across longer token sequences compared to simple RNNs."
-        },
-        {
-          id: "q3",
-          question: "Which company developed the BERT model?",
-          options: [
-            "OpenAI",
-            "Meta", 
-            "Google",
-            "Microsoft"
-          ],
-          correctAnswer: 2,
-          explanation: "BERT was developed by Google and has become influential in search, semantic parsing, and language translation tasks."
-        }
-      ]
-    }
-  },
-  {
-    id: "module-3",
-    title: "Crafting Effective Prompts", 
-    description: "Learning key techniques for constructing high-quality prompts that reliably elicit desired AI responses.",
-    estimatedTime: 35,
-    videoUrl: "https://www.youtube.com/embed/jC4v5AS4RIM",
-    content: `# Crafting Effective Prompts
+// ### How to Stay Current
+// - Follow relevant news sources and blogs specialising in AI
+// - Subscribe to newsletters from research labs and AI companies  
+// - Engage with online communities discussing latest breakthroughs
+// - Experiment with new tools and platforms as they become available`,
+//     quiz: {
+//       questions: [
+//         {
+//           id: "q1",
+//           question: "What is the main difference between GPT and BERT models?",
+//           options: [
+//             "GPT is for text generation, BERT is for understanding tasks",
+//             "BERT is newer than GPT",
+//             "GPT only works with English, BERT works with all languages",
+//             "There is no difference between them"
+//           ],
+//           correctAnswer: 0,
+//           explanation: "GPT models excel at text generation tasks, while BERT is designed primarily for natural language understanding tasks like question-answering."
+//         },
+//         {
+//           id: "q2",
+//           question: "What architectural improvement do LSTMs have over simple RNNs?", 
+//           options: [
+//             "They are faster to train",
+//             "They can sustain context better across longer sequences",
+//             "They use less memory",
+//             "They only work with transformers"
+//           ],
+//           correctAnswer: 1,
+//           explanation: "LSTMs (Long Short-Term Memory networks) can maintain context much better across longer token sequences compared to simple RNNs."
+//         },
+//         {
+//           id: "q3",
+//           question: "Which company developed the BERT model?",
+//           options: [
+//             "OpenAI",
+//             "Meta", 
+//             "Google",
+//             "Microsoft"
+//           ],
+//           correctAnswer: 2,
+//           explanation: "BERT was developed by Google and has become influential in search, semantic parsing, and language translation tasks."
+//         }
+//       ]
+//     }
+//   },
+//   {
+//     id: "module-3",
+//     title: "Crafting Effective Prompts", 
+//     description: "Learning key techniques for constructing high-quality prompts that reliably elicit desired AI responses.",
+//     estimatedTime: 35,
+//     isPremium: true,
+//     videoUrl: "https://www.youtube.com/embed/jC4v5AS4RIM",
+//     content: `# Crafting Effective Prompts
 
-In this lesson, you will learn the key ingredients that go into constructing high-quality prompts primed for success. We will move beyond just typing questions into a text box and, instead, strategically sculpt prompts to reliably elicit the responses we want from AIs.
+// In this lesson, you will learn the key ingredients that go into constructing high-quality prompts primed for success. We will move beyond just typing questions into a text box and, instead, strategically sculpt prompts to reliably elicit the responses we want from AIs.
 
-## The Power of Context
+// ## The Power of Context
 
-Let's simplify this idea. Imagine you're asking a smart computer program (like an AI) a question. To get the best answer, you need to give it a good hint or context.
+// Let's simplify this idea. Imagine you're asking a smart computer program (like an AI) a question. To get the best answer, you need to give it a good hint or context.
 
-Here's how it works: Instead of just asking the question, you first tell the AI where the question is coming from. For example, if you're asking a legal question, you'd say, "Now, I'm asking you something related to the law." This is like letting the AI know the kind of information it should focus on.
+// Here's how it works: Instead of just asking the question, you first tell the AI where the question is coming from. For example, if you're asking a legal question, you'd say, "Now, I'm asking you something related to the law." This is like letting the AI know the kind of information it should focus on.
 
-### Why Context Matters
+// ### Why Context Matters
 
-It's a bit like talking to a friend who's good at different things. If you need legal advice, you'd give your legal expert friend some background before asking the question. The same goes for AI. When you give it a clear context or background, it's better prepared to understand and answer your question accurately.
+// It's a bit like talking to a friend who's good at different things. If you need legal advice, you'd give your legal expert friend some background before asking the question. The same goes for AI. When you give it a clear context or background, it's better prepared to understand and answer your question accurately.
 
-## Clear, Step-by-Step Instructions
+// ## Clear, Step-by-Step Instructions
 
-Good prompts also simplify complex goals into step-by-step instructions. Break things down into clear, direct language to avoid confusing the model. We filter out ambiguities because AIs interpret prompts ultra-literally. Remove assumptions of common sense, too!
+// Good prompts also simplify complex goals into step-by-step instructions. Break things down into clear, direct language to avoid confusing the model. We filter out ambiguities because AIs interpret prompts ultra-literally. Remove assumptions of common sense, too!
 
-### Example: Drawing Instructions
+// ### Example: Drawing Instructions
 
-For instance, imagine you're telling an AI to draw a picture. Instead of saying, "Draw a beautiful landscape," which might be a bit vague, you would give clear and direct instructions:
+// For instance, imagine you're telling an AI to draw a picture. Instead of saying, "Draw a beautiful landscape," which might be a bit vague, you would give clear and direct instructions:
 
-**Vague**: "Draw a beautiful landscape"  
-**Clear**: "Draw a beautiful landscape with a big green tree, and a clear blue sky with a yellow sun."
+// **Vague**: "Draw a beautiful landscape"  
+// **Clear**: "Draw a beautiful landscape with a big green tree, and a clear blue sky with a yellow sun."
 
-This straightforward instruction helps the AI because it understands each step precisely.
+// This straightforward instruction helps the AI because it understands each step precisely.
 
-## Align with Model Training
+// ## Align with Model Training
 
-Additionally, effective prompts align with the model's training data. Leveraging the knowledge already internalised helps prompts resonate better. Research what the model you choose was trained on to match prompts accordingly. Appeal directly to that learned expertise.
+// Additionally, effective prompts align with the model's training data. Leveraging the knowledge already internalised helps prompts resonate better. Research what the model you choose was trained on to match prompts accordingly. Appeal directly to that learned expertise.
 
-## Correct Harmful Defaults
+// ## Correct Harmful Defaults
 
-Prompts must also correct potentially harmful defaults, like biases. We proactively reframe problematic assumptions built into models to uphold ethical standards. For example, stating: "Provide helpful, harmless, honest answers..." signals the behaviour we expect.
+// Prompts must also correct potentially harmful defaults, like biases. We proactively reframe problematic assumptions built into models to uphold ethical standards. For example, stating: "Provide helpful, harmless, honest answers..." signals the behaviour we expect.
 
-## Spark Creativity
+// ## Spark Creativity
 
-Finally, good prompts can spark creativity. Imagine you want the AI to come up with a catchy slogan about solar energy, and you want it to sound like something from a Dr. Seuss book. By giving the AI specific instructions like, "Create a slogan in a creative Dr. Seuss style," you're setting the stage for the AI to unleash its imaginative side.
+// Finally, good prompts can spark creativity. Imagine you want the AI to come up with a catchy slogan about solar energy, and you want it to sound like something from a Dr. Seuss book. By giving the AI specific instructions like, "Create a slogan in a creative Dr. Seuss style," you're setting the stage for the AI to unleash its imaginative side.
 
-In this way, you're guiding the AI to be creative within certain boundaries and producing something unique and interesting.`,
-    quiz: {
-      questions: [
-        {
-          id: "q1", 
-          question: "Why is providing context important when crafting prompts?",
-          options: [
-            "It makes the prompt longer",
-            "It helps the AI understand what kind of information to focus on",
-            "It's required by all AI models", 
-            "It doesn't actually matter"
-          ],
-          correctAnswer: 1,
-          explanation: "Context helps guide the AI to understand what domain or type of information it should focus on, leading to more accurate and relevant responses."
-        },
-        {
-          id: "q2",
-          question: "How should complex goals be presented in prompts?",
-          options: [
-            "As single, long sentences",
-            "Broken down into clear, step-by-step instructions",
-            "Using technical jargon only",
-            "With as few words as possible"
-          ],
-          correctAnswer: 1, 
-          explanation: "Breaking complex goals into clear, step-by-step instructions helps avoid confusion since AIs interpret prompts literally and need explicit guidance."
-        },
-        {
-          id: "q3",
-          question: "What should effective prompts do regarding model biases?",
-          options: [
-            "Ignore them completely",
-            "Enhance them for better performance", 
-            "Proactively correct harmful defaults and assumptions",
-            "Only address them if problems arise"
-          ],
-          correctAnswer: 2,
-          explanation: "Effective prompts should proactively reframe problematic assumptions and biases built into models to uphold ethical standards and prevent harmful outputs."
-        }
-      ]
-    }
-  },
+// In this way, you're guiding the AI to be creative within certain boundaries and producing something unique and interesting.`,
+//     quiz: {
+//       questions: [
+//         {
+//           id: "q1", 
+//           question: "Why is providing context important when crafting prompts?",
+//           options: [
+//             "It makes the prompt longer",
+//             "It helps the AI understand what kind of information to focus on",
+//             "It's required by all AI models", 
+//             "It doesn't actually matter"
+//           ],
+//           correctAnswer: 1,
+//           explanation: "Context helps guide the AI to understand what domain or type of information it should focus on, leading to more accurate and relevant responses."
+//         },
+//         {
+//           id: "q2",
+//           question: "How should complex goals be presented in prompts?",
+//           options: [
+//             "As single, long sentences",
+//             "Broken down into clear, step-by-step instructions",
+//             "Using technical jargon only",
+//             "With as few words as possible"
+//           ],
+//           correctAnswer: 1, 
+//           explanation: "Breaking complex goals into clear, step-by-step instructions helps avoid confusion since AIs interpret prompts literally and need explicit guidance."
+//         },
+//         {
+//           id: "q3",
+//           question: "What should effective prompts do regarding model biases?",
+//           options: [
+//             "Ignore them completely",
+//             "Enhance them for better performance", 
+//             "Proactively correct harmful defaults and assumptions",
+//             "Only address them if problems arise"
+//           ],
+//           correctAnswer: 2,
+//           explanation: "Effective prompts should proactively reframe problematic assumptions and biases built into models to uphold ethical standards and prevent harmful outputs."
+//         }
+//       ]
+//     }
+//   },
   {
     id: "module-4",
     title: "Fine-Tuning and Advanced Customization",
@@ -305,6 +470,7 @@ This goes beyond individual prompt feedback to systematic improvement across man
 - Can be done through simple positive/negative feedback
 - Allows customization without deep technical knowledge
 - Improves consistency in desired behaviors over time`,
+  isPremium: true,
     quiz: {
       questions: [
         {
